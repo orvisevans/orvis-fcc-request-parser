@@ -31,7 +31,10 @@ app.route('/_api/package.json')
   
 app.route('/')
     .get(function(req, res) {
-		  res.sendFile(process.cwd() + '/views/index.html');
+		  res.send({ipaddress: req.headers['x-forwarded-for'].split(',')[0],
+                language: req.headers['accept-language'].split(',')[0],
+                software: /(?=\()(.+?)(?=\))/.exec(req.headers['user-agent'])[0].slice(1)
+               });  
     });
 
 // Respond not found to all the wrong routes
